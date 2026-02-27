@@ -15,7 +15,7 @@ Scarcity of uncensored samples and neglect of valuable censored samples in exist
 
 A genomics-guided prompt framework to explore complementary information between unpaired MRI and genomic data;
 
-A Frequency-Aware Tetra-Orientated Mamba (FTM) to capture correlations between frequency and spatial features in MRI;
+Frequency-Aware Tetra-Orientated Mamba (FTMamba) to capture correlations between frequency and spatial features in MRI;
 
 Event-Conditional with Genomics-Guided Censor Modeling (EGCM) module to filter reliable censored data and assign genomics-guided survival time, increasing the effective proportion of censored samples.
 
@@ -25,7 +25,7 @@ In inference, GLSurv only relies on the MRI-based module, ensuring clinical prac
 
 A genomics-guided training framework to explore cross-modal correlations between unpaired MRIs and genomic data, enhancing non-invasive glioma prognosis;
 
-Frequency-Aware Tetra-Orientated Mamba (FTM) to exploit complementary frequency and spatial features in MRI for survival prediction;
+Frequency-Aware Tetra-Orientated Mamba (FTMamba) to exploit complementary frequency and spatial features in MRI for survival prediction;
 
 Event-Conditional with Genomics-Guided Censor Modeling (EGCM) to filter high-confidence censored data and infer their survival time, improving the utility of censored samples.
 
