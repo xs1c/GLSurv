@@ -189,10 +189,7 @@ def get_all_ci_from_list(true_event_times, pred_risk_scores, event_status):
 def greedy_search(
         pseudo_sample_info, sample_names, idx, start, end
 ):
-    """
-    贪心搜索：在[start, end]范围内（步长1.1）找让C-index最大的best_time
-    完全按你的思路：步长1.1，基于风险得分计算C-index
-    """
+   
     best_cindex = 0.0
     best_value = None
 
@@ -236,7 +233,6 @@ def generate_pseudo_labels(sample_info, confidence_dict, predicted_scores,
     if len(censored_samples) == 0:
         return sample_info, []
 
-    # ========== 保留原有置信度筛选逻辑（仅调整取值来源） ==========
     censored_confidence = {name: confidence_dict[name] for name in censored_samples}
     sorted_censored = sorted(censored_confidence.items(), key=lambda x: x[1], reverse=True)
     top_num = int(len(sorted_censored) * percent)
@@ -244,8 +240,6 @@ def generate_pseudo_labels(sample_info, confidence_dict, predicted_scores,
         top_num = 1
     top_censored = [name for name, _ in sorted_censored[:top_num]]
 
-    # ========== 核心新增：只保留当前轮训练过的样本（p_times里有记录的） ==========
-    # 筛选逻辑：top_censored中仅保留存在于p_times的样本（当前轮训练过的）
     top_censored = [name for name in top_censored if name in p_times]
     print(f"筛选后，当前轮处理的高置信度删失样本数：{len(top_censored)}")
 
@@ -272,7 +266,6 @@ def generate_pseudo_labels(sample_info, confidence_dict, predicted_scores,
         sample_confidence = confidence_dict[censored_name]
         p_time = p_times[censored_name]
 
-        # 跳过非原始删失且未生成伪标签的样本（双重保险）
         if current_info['original_status'] != 0 and not current_info.get('is_pseudo', False):
             continue
 
