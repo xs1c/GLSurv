@@ -219,7 +219,7 @@ def greedy_search(
 
 
 def generate_pseudo_labels(sample_info, confidence_dict, predicted_scores,
-                           true_event_times, true_status, p_times, percent=0.3, lambda_=0.4, top_k=10):
+                           true_event_times, true_status, p_times, percent=0.3, lambda_=0.4, top_k=15):
     censored_samples = []
     for name, info in sample_info.items():
         # 初始化原始状态/时间（避免首次处理时无此字段）
@@ -433,9 +433,7 @@ def main_worker():
         predicted_score_train = []
         true_event_time_train = []
         true_status_train = []
-        # 新增：保存当前epoch的样本p_time
         p_time_train = {}
-        # 新增：保存当前epoch的样本名称
         sample_names_train = []
         optimizer.zero_grad()
 
@@ -522,7 +520,6 @@ def main_worker():
                 rank_history[name] = []
                 print(f"初始化样本{name}的rank_history为空列表")
 
-        # ======================== 第三步：计算当前epoch样本风险排序 ========================
         # 按预测风险排序（风险越高，排名越小）
         score_name_pairs = list(zip(predicted_score_train, sample_names_train))
         score_name_pairs_sorted = sorted(score_name_pairs, key=lambda x: x[0], reverse=True)
