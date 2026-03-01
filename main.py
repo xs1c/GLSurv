@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser()
 # Basic Information
 parser.add_argument('--user', default='UCSF', type=str)
 
-parser.add_argument('--experiment', default='TransBTS_Boundary', type=str)
+parser.add_argument('--experiment', default='Survival', type=str)
 
 parser.add_argument('--date', default=local_time.split(' ')[0], type=str)
 
@@ -145,16 +145,7 @@ def update_egcm_confidence(confidence_dict, fluct_dict, lambda_=0.5):
     return new_confidence
 
 def calculate_dynamic_lambda(epoch, max_epoch, lambda_init=0.5, lambda_min=0.1, power=0.9):
-    """
-    参考原学习率指数衰减公式，计算动态DMAC平衡参数λ
-    实现：λ从lambda_init平滑递减至lambda_min，与训练轮次同步
-    :param epoch: 当前训练轮次
-    :param max_epoch: 总训练轮次（args.end_epoch）
-    :param lambda_init: λ初始值，你的需求设为0.5
-    :param lambda_min: λ下限，你的需求设为0.1
-    :param power: 衰减指数，与原学习率一致设为0.9
-    :return: 当前轮次的动态λ（保留8位小数）
-    """
+
     if max_epoch == 0:  # 防止除0错误
         return round(lambda_min, 8)
     # 完全复用原学习率的指数衰减核心项
@@ -174,12 +165,7 @@ def custom_sort(arr, mid):
 
 
 def get_all_ci_from_list(true_event_times, pred_risk_scores, event_status):
-    """
-    修正变量名，贴合实际含义：
-    true_event_times：真实事件/删失时间
-    pred_risk_scores：预测风险得分（需取负对齐lifelines规则）
-    event_status：删失状态（1=未删失，0=删失）
-    """
+  
     ordered_time = true_event_times
     ordered_pred_time = [-x for x in pred_risk_scores]  # 取负是必须的，你记忆的完全正确
     ordered_observed = event_status
@@ -569,7 +555,6 @@ def main_worker():
                 print(f"\n===== Epoch {epoch} 无伪标签修改（无满足条件的存活样本）=====")
 
             log_file_path = "/home/pseudo_labels_log.txt"
-            # 确保目录存在
             os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
             # 追加写入日志
             with open(log_file_path, 'a', encoding='utf-8') as f:
